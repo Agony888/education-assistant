@@ -1,79 +1,24 @@
-# Education Research Assistant v2.6.1
+# Education Research Assistant v2.7
 
-面向 Codex 的中文教育科研 Skill，适用于论文阅读、文献综述、研究方法与理论框架、开题报告、毕业论文写作、Obsidian 文献库，以及小学数学、AI+教育和教师发展等方向。
+面向 Codex 的中文教育科研 Skill，支持论文解析、文献综述、研究方法与理论框架、开题报告、毕业论文设计、Obsidian 文献库，以及小学数学、AI+教育和教师发展等方向。
 
-v2.6.1 的核心变化是：用户需要完整任务时，可以自行选择“引导式”或“直接式”。两种方式最后都执行同一条完整工作流。
+v2.7 在 v2.6.1 的引导式/直接式工作流基础上，新增：
 
-> 这里的“直接调用所有工作流”是指：直接执行用户所选目标工作流中的全部阶段，而不是无差别同时运行四条不同目标的工作流。
+- 自适应问题选择；
+- 研究决策日志；
+- 决策变更传播；
+- 进度保存与恢复；
+- 四种最终成果档位。
 
-## 一、它是什么
-
-本项目包含：
-
-```text
-任务入口与模式路由
-+ 单项任务模板
-+ 完整工作流
-+ 引导式信息梳理
-+ 流程状态和阶段交接
-+ 证据协议
-+ 研究类型分流
-+ 教育科研知识库
-```
-
-它仍然是 Codex Skill，不是独立部署的 Coze、Dify 或 n8n 工作流引擎。但在一次对话中，它可以逐步收集信息，也可以直接连续执行完整科研流程。
-
-## 二、目录结构
-
-```text
-education-assistant/
-├── AGENTS.md
-├── README.md
-├── manifest.json
-├── 使用说明.md
-├── docs/
-│   └── prompt-manual.md
-└── .agents/
-    └── skills/
-        └── education-research-assistant/
-            ├── SKILL.md
-            ├── templates/
-            │   ├── guided-intake-template.md
-            │   ├── workflow-state-template.md
-            │   ├── paper-standard-template.md
-            │   ├── review-standard-template.md
-            │   ├── method-design-template.md
-            │   ├── proposal-standard-template.md
-            │   ├── thesis-master-template.md
-            │   └── ...
-            └── knowledge/
-                ├── evidence-protocol.md
-                ├── research-type-routing.md
-                ├── thesis-writing-system.md
-                ├── ai-education-bank.md
-                ├── primary-math-bank.md
-                ├── teacher-development-bank.md
-                ├── math-curriculum-standard-bank.md
-                └── ...
-```
-
-## 三、两类任务入口
+## 一、三种使用方式
 
 ### 1. 单项任务
 
-用户只需要一个明确结果时，直接调用对应模式：
+只执行一个明确模式：
 
 ```text
-paper      单篇论文解析
-review     多篇文献整合
-method     研究方法分析与设计
-theory     理论基础与分析框架
-quality    论文质量评价
-gap        研究不足、研究空间与选题
-citation   文献综述段落、小节与修改
-proposal   开题报告生成、修改与检查
-thesis     论文题目、问题、目录与章节
-obsidian   Obsidian 文献卡和知识库
+paper / review / method / theory / quality
+gap / citation / proposal / thesis / obsidian
 ```
 
 例如：
@@ -82,126 +27,37 @@ obsidian   Obsidian 文献卡和知识库
 请使用 education-research-assistant Skill，method 模式，design 深度，为题目《……》设计问卷维度。只完成问卷设计。
 ```
 
-单项任务完成后停止，不自动调用其他模式。
-
-### 2. 完整任务
-
-完整任务先确定目标工作流：
+### 2. 完整工作流：引导式 `guided`
 
 ```text
-paper-to-note        单篇论文解析、筛选与入库
-literature-review    多篇文献整理到综述初稿
-proposal-design      从研究方向到完整开题报告
-thesis-design        从题目到研究方案、目录与写作计划
+请使用 education-research-assistant Skill，workflow 模式，执行 thesis-design，选择 guided。
+每次只问我一个关键问题，全部梳理清楚后再执行完整工作流。
 ```
 
-然后由用户选择执行方式：
+引导式会根据用户回答动态选择下一问，而不是机械问完固定清单。
+
+### 3. 完整工作流：直接式 `direct`
 
 ```text
-A. 引导式：每次只确认一个关键问题，全部梳理清楚后执行完整工作流。
-B. 直接式：根据现有材料立即执行所选工作流的全部阶段，缺失信息明确标注。
+请使用 education-research-assistant Skill，workflow 模式，执行 thesis-design，选择 direct。
+根据现有材料直接执行该流程的全部阶段，不再提问；缺失内容明确标注。
 ```
 
-## 四、引导式和直接式的关系
+“执行全部阶段”指执行用户所选工作流的全部阶段，不是同时运行四条工作流。
 
-两者不是两套工作流。
+## 二、四条完整工作流
 
-```text
-引导式
-→ 逐轮收集信息
-→ 校验研究边界、数据条件和方法关系
-→ 形成工作流输入包
-→ 执行完整工作流全部阶段
-→ 输出最终成果
-
-直接式
-→ 读取用户已有材料
-→ 标记缺失、暂定信息和必要假设
-→ 执行所选工作流全部阶段
-→ 输出最终成果
-```
-
-两种方式的以下内容必须相同：
-
-- 工作流阶段；
-- 质量检查标准；
-- 中间产物；
-- 研究对齐要求；
-- 最终交付物。
-
-引导式只增加前置梳理，不是一个简化版本；直接式只减少前置提问，不得省略所选工作流的阶段。
-
-## 五、引导式如何使用
-
-例如，想从选题梳理到开题报告：
-
-```text
-请使用 education-research-assistant Skill，workflow 模式，执行 proposal-design 流程，选择 guided 引导式。请每次只问我一个关键问题，等信息梳理完成后，再执行完整开题工作流。
-```
-
-Skill 会依次确认最关键的信息，例如：
-
-```text
-最终交付物
-→ 研究对象与范围
-→ 核心现实问题
-→ 可获得的数据
-→ 研究类型
-→ 理论或分析框架
-→ 方法和工具
-→ 学校格式与限制
-```
-
-每轮只问一个主问题。用户可以随时输入：
-
-- `查看进度`；
-- `修改：字段=内容`；
-- `跳过`；
-- `不确定`；
-- `直接生成`；
-- `重新开始`；
-- `结束引导`。
-
-`直接生成` 会结束引导，并使用当前已经收集的信息执行同一条完整工作流。
-
-## 六、直接式如何使用
-
-例如，已有题目和研究条件，希望立即生成完整开题方案：
-
-```text
-请使用 education-research-assistant Skill，workflow 模式，执行 proposal-design 流程，选择 direct 直接式。
-
-题目：《……》
-研究对象：……
-研究条件：……
-现有文献：……
-
-请直接执行 proposal-design 的全部阶段，不再提问。缺失内容标注为待确认，不要编造。
-```
-
-直接式会先整理：
-
-- 已确认输入；
-- 暂定输入；
-- 缺失信息；
-- 必要假设；
-- 对流程的影响。
-
-然后执行用户所选完整工作流。
-
-## 七、四条完整工作流
-
-### 1. `paper-to-note`
+### `paper-to-note`
 
 ```text
 材料检查
-→ paper standard
-→ quality quick（按需）
-→ obsidian
+→ 论文解析
+→ 可选质量筛选
+→ Obsidian 文献卡
 → 字段完整性检查
 ```
 
-### 2. `literature-review`
+### `literature-review`
 
 ```text
 文献清点与去重
@@ -209,25 +65,25 @@ Skill 会依次确认最关键的信息，例如：
 → 相关性与质量筛选
 → 文献矩阵
 → 主题聚类与研究脉络
-→ 研究不足和研究空间
+→ 研究空间
 → 综述小节
 → 证据覆盖检查
 ```
 
-### 3. `proposal-design`
+### `proposal-design`
 
 ```text
-题目与研究条件检查
+题目与研究条件
 → 文献基础与研究空间
-→ 研究类型判断
+→ 研究类型
 → 理论或分析框架
-→ 方法与工具设计
+→ 方法与工具
 → 研究对齐表
 → 开题报告
-→ 开题质量检查
+→ 质量检查
 ```
 
-### 4. `thesis-design`
+### `thesis-design`
 
 ```text
 题目优化
@@ -236,14 +92,106 @@ Skill 会依次确认最关键的信息，例如：
 → 研究类型与目录
 → 理论或分析框架
 → 方法设计
-→ 问题—数据—方法—章节对齐
+→ 研究对齐表
 → 章节写作计划
 → 论文检查
 ```
 
-## 八、关键质量规则
+## 三、自适应引导
 
-### 1. 证据协议
+引导式读取 `knowledge/adaptive-guidance-bank.md`，按照以下因素选择下一问：
+
+- 是否阻断后续流程；
+- 是否改变研究类型或方法；
+- 是否解决当前冲突；
+- 是否能同时确定多个下游环节；
+- 用户是否容易回答。
+
+优先顺序：
+
+```text
+阻断性冲突
+→ 研究对象与边界
+→ 核心问题
+→ 数据与现实条件
+→ 研究类型
+→ 概念、理论或维度
+→ 方法与工具
+→ 成果档位与格式
+```
+
+## 四、研究决策日志
+
+`templates/research-decision-log-template.md` 记录：
+
+- 研究中心；
+- 研究对象与边界；
+- 核心概念；
+- 研究问题；
+- 研究类型；
+- 数据来源；
+- 理论或分析框架；
+- 方法与工具；
+- 目录结构；
+- 用户明确排除的方案。
+
+修改一个关键决定后，Skill 会检查下游影响。例如：
+
+```text
+研究问题变化
+→ 所需证据
+→ 数据来源
+→ 方法与工具
+→ 分析方式
+→ 结果章节
+```
+
+## 五、进度保存与恢复
+
+引导过程中输入：
+
+```text
+保存进度
+```
+
+Skill 会输出可复制的 YAML 检查点。
+
+后续粘贴检查点并输入：
+
+```text
+恢复进度
+```
+
+Skill 会恢复已确认、暂定、冲突和缺失内容，不重复询问已经确认的问题。
+
+检查点是用户可保存的结构化摘要，不代表系统在外部后台永久保存会话。
+
+## 六、引导式控制指令
+
+| 指令 | 作用 |
+|---|---|
+| `查看进度` | 查看完成度、已确认、暂定、冲突和缺失 |
+| `修改：字段=内容` | 修改决定并检查下游影响 |
+| `跳过` | 暂时跳过当前问题 |
+| `不确定` | 标记为暂定 |
+| `保存进度` | 输出检查点 |
+| `恢复进度` | 恢复检查点 |
+| `直接生成` | 切换直接式，执行同一目标工作流 |
+| `重新开始` | 清空当前状态 |
+| `结束引导` | 只总结当前信息 |
+
+## 七、最终成果档位
+
+| 档位 | 用途 |
+|---|---|
+| `outline` | 框架、对齐表和待确认项 |
+| `standard` | 默认完整方案 |
+| `submission-ready` | 材料充分时生成可直接修改提交的正式稿 |
+| `review-ready` | 正式成果加严格评审和修改动作 |
+
+材料不能支持用户要求的档位时，Skill 会降级并说明原因。
+
+## 八、证据和研究对齐
 
 关键判断区分：
 
@@ -252,27 +200,14 @@ Skill 会依次确认最关键的信息，例如：
 - 方法建议；
 - 材料不足。
 
-优先标记页码、章节、表格或可识别位置。不得把“当前材料没有找到”写成“整个研究领域没有”。
+研究设计至少形成：
 
-### 2. 研究对齐
+| 研究问题 | 所需证据 | 数据来源 | 方法/工具 | 分析方式 | 对应章节 |
+|---|---|---|---|---|---|
 
-研究设计必须形成：
+没有数据支持的问题必须修改、删除或标记为待解决。
 
-```text
-题目
-→ 核心概念
-→ 研究问题
-→ 理论或分析维度
-→ 数据来源
-→ 方法与工具
-→ 分析方式
-→ 对应章节
-→ 结论与建议
-```
-
-没有数据支持的研究问题必须修改、删除或标记为待解决。
-
-### 3. 研究类型分流
+## 九、研究类型分流
 
 支持：
 
@@ -286,47 +221,27 @@ Skill 会依次确认最关键的信息，例如：
 
 论文目录不会默认套用“现状—问题—原因—策略”。
 
-## 九、专项知识库
-
-| 方向 | 文件 |
-|---|---|
-| AI+教育、生成式 AI | `knowledge/ai-education-bank.md` |
-| 小学数学 | `knowledge/primary-math-bank.md` |
-| 小学数学课程标准 | `knowledge/math-curriculum-standard-bank.md` |
-| 教师数字素养与专业发展 | `knowledge/teacher-development-bank.md` |
-| 教育理论 | `knowledge/education-theory-bank.md` |
-| 研究方法 | `knowledge/research-method-bank.md` |
-| 论文结构 | `knowledge/thesis-writing-system.md` |
-| 证据规范 | `knowledge/evidence-protocol.md` |
-| 研究类型 | `knowledge/research-type-routing.md` |
-
-交叉任务会组合读取对应知识库。
-
-## 十、推荐调用
-
-### 引导式开题设计
+## 十、目录中的新增文件
 
 ```text
-请使用 education-research-assistant Skill，workflow 模式，执行 proposal-design 流程，选择 guided。每次只问一个关键问题；题目、对象、数据条件、理论和方法梳理清楚后，再执行完整开题工作流。
+knowledge/adaptive-guidance-bank.md
+knowledge/output-profiles.md
+templates/research-decision-log-template.md
+templates/session-checkpoint-template.md
 ```
 
-### 直接式开题设计
+## 十一、版本清单
 
-```text
-请使用 education-research-assistant Skill，workflow 模式，执行 proposal-design 流程，选择 direct。根据我已经提供的材料直接执行该流程的全部阶段，不再提问；缺失信息、暂定判断和必要假设单独列出。
-```
+- 21 个模板；
+- 14 个知识库；
+- 11 个模式；
+- 4 条完整工作流；
+- 2 种工作流入口；
+- 4 种成果档位。
 
-### 未指定执行方式
+## 十二、文档
 
-```text
-请使用 education-research-assistant Skill 帮我从选题做到开题报告。
-```
-
-此时 Skill 应先让用户选择：引导式或直接式。
-
-## 十一、文档
-
-- `使用说明.md`：日常使用方法；
-- `docs/prompt-manual.md`：完整提示词手册；
+- `使用说明.md`：日常使用；
+- `docs/prompt-manual.md`：可复制提示词；
 - `examples/call-examples.md`：调用示例；
-- `CHANGELOG.md`：版本更新记录。
+- `CHANGELOG.md`：版本记录。
