@@ -20,8 +20,14 @@
     "workflow"
   ],
   "workflow_entry_styles": [
-    "guided",
-    "direct"
+    {
+      "name": "guided",
+      "behavior": "Collect and validate required inputs one question at a time, then execute every stage of the selected pipeline."
+    },
+    {
+      "name": "direct",
+      "behavior": "Use current materials immediately and execute every stage of the selected pipeline, labeling gaps and assumptions."
+    }
   ],
   "pipelines": [
     "paper-to-note",
@@ -29,10 +35,11 @@
     "proposal-design",
     "thesis-design"
   ],
+  "entry_scope_note": "Direct runs all stages of the selected pipeline; it does not run all four pipelines simultaneously.",
   "core_features": [
     "User-selectable guided or direct workflow entry",
     "One-question-at-a-time guided intake",
-    "Direct execution of all selected workflow stages",
+    "Direct execution of every selected pipeline stage",
     "Strict single-mode boundaries",
     "Multi-stage workflow orchestration",
     "Structured stage handoff",
