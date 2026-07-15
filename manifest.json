@@ -1,10 +1,10 @@
 {
   "name": "Education Research Assistant",
-  "version": "2.5.1-prompt-manual",
+  "version": "2.6.0-workflow-edition",
   "structure": {
     "skill": ".agents/skills/education-research-assistant/SKILL.md",
-    "templates": 17,
-    "knowledge": 10
+    "templates": 18,
+    "knowledge": 12
   },
   "modes": [
     "paper",
@@ -16,22 +16,30 @@
     "citation",
     "proposal",
     "thesis",
-    "obsidian"
+    "obsidian",
+    "workflow"
   ],
-  "refinements": [
-    "Slim dispatcher SKILL.md",
-    "Templates separated",
-    "Knowledge bank separated",
-    "Thesis mode strengthened",
-    "Obsidian mode strengthened",
-    "Token control strengthened",
-    "Added AI+education knowledge bank",
-    "Added primary mathematics knowledge bank",
-    "Added teacher development knowledge bank",
-    "Updated skill routing rules for specialized knowledge",
-    "Added math curriculum standard knowledge bank",
-    "Deepened primary mathematics curriculum-standard based teaching, homework, evaluation, and thesis writing rules",
-    "Integrated prompt manual into docs/prompt-manual.md"
+  "pipelines": [
+    "paper-to-note",
+    "literature-review",
+    "proposal-design",
+    "thesis-design"
+  ],
+  "core_features": [
+    "Strict single-mode boundaries",
+    "Multi-stage workflow orchestration",
+    "Structured stage handoff",
+    "Evidence and source fidelity protocol",
+    "Research question-method-data alignment",
+    "Research type routing",
+    "Evidence-led literature synthesis",
+    "Bachelor-level feasibility control",
+    "Specialized AI education knowledge",
+    "Specialized primary mathematics knowledge",
+    "Teacher development knowledge",
+    "Mathematics curriculum standard knowledge",
+    "Obsidian literature knowledge base",
+    "Scope and token control"
   ],
   "specialized_knowledge": [
     "knowledge/ai-education-bank.md",
@@ -39,7 +47,16 @@
     "knowledge/teacher-development-bank.md",
     "knowledge/math-curriculum-standard-bank.md"
   ],
+  "methodological_knowledge": [
+    "knowledge/evidence-protocol.md",
+    "knowledge/research-type-routing.md",
+    "knowledge/research-method-bank.md",
+    "knowledge/education-theory-bank.md",
+    "knowledge/thesis-writing-system.md"
+  ],
   "docs": [
+    "README.md",
+    "使用说明.md",
     "docs/prompt-manual.md"
   ]
 }
