@@ -1,9 +1,9 @@
 {
   "name": "Education Research Assistant",
-  "version": "2.6.0-workflow-edition",
+  "version": "2.6.1-guided-workflow-entry",
   "structure": {
     "skill": ".agents/skills/education-research-assistant/SKILL.md",
-    "templates": 18,
+    "templates": 19,
     "knowledge": 12
   },
   "modes": [
@@ -19,6 +19,10 @@
     "obsidian",
     "workflow"
   ],
+  "workflow_entry_styles": [
+    "guided",
+    "direct"
+  ],
   "pipelines": [
     "paper-to-note",
     "literature-review",
@@ -26,6 +30,9 @@
     "thesis-design"
   ],
   "core_features": [
+    "User-selectable guided or direct workflow entry",
+    "One-question-at-a-time guided intake",
+    "Direct execution of all selected workflow stages",
     "Strict single-mode boundaries",
     "Multi-stage workflow orchestration",
     "Structured stage handoff",
