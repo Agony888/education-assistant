@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## v2.6.1 Guided Workflow Entry
+
+- 完整任务新增用户可选入口：`guided` 引导式与 `direct` 直接式。
+- 引导式每轮只询问一个关键问题，逐步形成工作流输入包后再执行完整流程。
+- 直接式使用现有材料立即执行完整流程，明确标注缺失信息、暂定输入和必要假设。
+- 明确引导式与直接式调用同一条工作流，不改变阶段、质量标准和最终交付物。
+- 新增 `templates/guided-intake-template.md`。
+- 强化 `workflow-state-template.md`，记录入口选择、输入包、入口切换和假设。
+- 支持用户在引导中使用 `查看进度`、`修改`、`跳过`、`不确定`、`直接生成`、`重新开始` 和 `结束引导`。
+- 更新 `SKILL.md`、`AGENTS.md`、README、使用说明、提示词手册、调用示例和 manifest。
+
 ## v2.6.0 Workflow Edition
 
 - 新增 `workflow` 模式，支持单篇入库、文献综述、开题设计和论文设计四条连续流程。
