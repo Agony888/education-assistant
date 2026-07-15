@@ -1,10 +1,10 @@
 {
   "name": "Education Research Assistant",
-  "version": "2.6.1-guided-workflow-entry",
+  "version": "2.7.0-adaptive-guidance",
   "structure": {
     "skill": ".agents/skills/education-research-assistant/SKILL.md",
-    "templates": 19,
-    "knowledge": 12
+    "templates": 21,
+    "knowledge": 14
   },
   "modes": [
     "paper",
@@ -22,7 +22,7 @@
   "workflow_entry_styles": [
     {
       "name": "guided",
-      "behavior": "Collect and validate required inputs one question at a time, then execute every stage of the selected pipeline."
+      "behavior": "Adaptively collect and validate required inputs one question at a time, then execute every stage of the selected pipeline."
     },
     {
       "name": "direct",
@@ -35,10 +35,31 @@
     "proposal-design",
     "thesis-design"
   ],
+  "output_profiles": [
+    "outline",
+    "standard",
+    "submission-ready",
+    "review-ready"
+  ],
+  "guided_commands": [
+    "查看进度",
+    "修改：字段=内容",
+    "跳过",
+    "不确定",
+    "保存进度",
+    "恢复进度",
+    "直接生成",
+    "重新开始",
+    "结束引导"
+  ],
   "entry_scope_note": "Direct runs all stages of the selected pipeline; it does not run all four pipelines simultaneously.",
   "core_features": [
     "User-selectable guided or direct workflow entry",
-    "One-question-at-a-time guided intake",
+    "Adaptive one-question-at-a-time guidance",
+    "Question priority and branching by research conditions",
+    "Research decision log and downstream change propagation",
+    "Portable session checkpoint and resume",
+    "Four final deliverable output profiles",
     "Direct execution of every selected pipeline stage",
     "Strict single-mode boundaries",
     "Multi-stage workflow orchestration",
@@ -66,11 +87,20 @@
     "knowledge/research-type-routing.md",
     "knowledge/research-method-bank.md",
     "knowledge/education-theory-bank.md",
-    "knowledge/thesis-writing-system.md"
+    "knowledge/thesis-writing-system.md",
+    "knowledge/adaptive-guidance-bank.md",
+    "knowledge/output-profiles.md"
+  ],
+  "workflow_templates": [
+    "templates/workflow-state-template.md",
+    "templates/guided-intake-template.md",
+    "templates/research-decision-log-template.md",
+    "templates/session-checkpoint-template.md"
   ],
   "docs": [
     "README.md",
     "使用说明.md",
-    "docs/prompt-manual.md"
+    "docs/prompt-manual.md",
+    "examples/call-examples.md"
   ]
 }
