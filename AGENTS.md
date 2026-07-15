@@ -20,7 +20,7 @@ Examples: one paper analysis, one questionnaire design, one title revision, one 
 
 ### Complete workflow
 
-When the user wants a complete research process, identify the target pipeline:
+When the user wants a complete research process, identify one target pipeline:
 
 - `paper-to-note`;
 - `literature-review`;
@@ -29,19 +29,21 @@ When the user wants a complete research process, identify the target pipeline:
 
 Then use the user's requested entry style:
 
-1. **Guided entry (`guided`)**: ask one key question per turn, build a verified workflow input package, and then execute every stage of the target pipeline.
-2. **Direct entry (`direct`)**: use the available material immediately and execute every stage of the target pipeline; label missing information, tentative inputs, and necessary assumptions.
+1. **Guided entry (`guided`)**: ask one key question per turn, build a verified workflow input package, and then execute every stage of the selected pipeline.
+2. **Direct entry (`direct`)**: use the available material immediately and execute every stage of the selected pipeline; label missing information, tentative inputs, and necessary assumptions.
+
+“Execute all stages directly” means all stages of the selected pipeline. Do not run all four pipelines simultaneously unless a user explicitly requests four separate deliverables.
 
 If the user has not chosen an entry style, show this choice:
 
 ```text
 A. 引导式：每次只确认一个关键问题，梳理完成后执行完整工作流。
-B. 直接式：根据现有材料立即执行完整工作流，缺失内容明确标注。
+B. 直接式：根据现有材料立即执行所选工作流的全部阶段，缺失内容明确标注。
 ```
 
 Do not ask again when the user already said “一步一步引导” or “直接完成，不要提问”.
 
-The two entry styles must use the same pipeline stages, quality gates, and final deliverables. Guided entry is not a separate simplified product.
+The two entry styles must use the same selected-pipeline stages, quality gates, and final deliverables. Guided entry is not a separate simplified product.
 
 Read `templates/guided-intake-template.md` for guided intake and `templates/workflow-state-template.md` for workflow execution.
 
@@ -51,13 +53,13 @@ Read `templates/guided-intake-template.md` for guided intake and `templates/work
 - Do not repeat information already confirmed in the current conversation.
 - Ask the most consequential missing question first.
 - Allow `查看进度`, `修改：字段=内容`, `跳过`, `不确定`, `直接生成`, `重新开始`, and `结束引导`.
-- `直接生成` switches to direct entry and runs the same target pipeline with the current input package.
-- Once minimum inputs are met and the user says `执行`, stop asking isolated questions and run the full workflow.
+- `直接生成` switches to direct entry and runs the same selected pipeline with the current input package.
+- Once minimum inputs are met and the user says `执行`, stop asking isolated questions and run the full selected pipeline.
 
 ## Direct entry rules
 
 - List available inputs, missing inputs, tentative inputs, and necessary assumptions.
-- Do not reduce the number of pipeline stages merely because the user chose direct entry.
+- Do not reduce the number of stages in the selected pipeline merely because the user chose direct entry.
 - Complete all supported stages in the current response.
 - A critical failure can stop the affected stage, but unrelated deliverables should still be completed where possible.
 
