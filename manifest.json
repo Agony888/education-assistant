@@ -1,0 +1,45 @@
+{
+  "name": "Education Research Assistant",
+  "version": "2.5.1-prompt-manual",
+  "structure": {
+    "skill": ".agents/skills/education-research-assistant/SKILL.md",
+    "templates": 17,
+    "knowledge": 10
+  },
+  "modes": [
+    "paper",
+    "review",
+    "method",
+    "theory",
+    "quality",
+    "gap",
+    "citation",
+    "proposal",
+    "thesis",
+    "obsidian"
+  ],
+  "refinements": [
+    "Slim dispatcher SKILL.md",
+    "Templates separated",
+    "Knowledge bank separated",
+    "Thesis mode strengthened",
+    "Obsidian mode strengthened",
+    "Token control strengthened",
+    "Added AI+education knowledge bank",
+    "Added primary mathematics knowledge bank",
+    "Added teacher development knowledge bank",
+    "Updated skill routing rules for specialized knowledge",
+    "Added math curriculum standard knowledge bank",
+    "Deepened primary mathematics curriculum-standard based teaching, homework, evaluation, and thesis writing rules",
+    "Integrated prompt manual into docs/prompt-manual.md"
+  ],
+  "specialized_knowledge": [
+    "knowledge/ai-education-bank.md",
+    "knowledge/primary-math-bank.md",
+    "knowledge/teacher-development-bank.md",
+    "knowledge/math-curriculum-standard-bank.md"
+  ],
+  "docs": [
+    "docs/prompt-manual.md"
+  ]
+}
