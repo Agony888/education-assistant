@@ -8,6 +8,14 @@ This repository contains one Codex skill:
 
 Use it for Chinese education research tasks: paper analysis, literature review, research methods, theory and analytical frameworks, quality review, research spaces, proposal design, thesis writing, Obsidian notes, primary mathematics, AI in education, and teacher development.
 
+The skill root is:
+
+```text
+.agents/skills/education-research-assistant/
+```
+
+All template and knowledge references below are relative to that skill root. When resolving them from the repository root, prefix them with `.agents/skills/education-research-assistant/`.
+
 ## Task entry
 
 ### Single task
@@ -36,11 +44,11 @@ If entry style is unspecified, offer one concise choice. Do not ask again when t
 
 Read:
 
-- `templates/guided-intake-template.md`;
-- `knowledge/adaptive-guidance-bank.md`;
-- `templates/research-decision-log-template.md`;
-- `templates/session-checkpoint-template.md`;
-- `knowledge/output-profiles.md`.
+- `.agents/skills/education-research-assistant/templates/guided-intake-template.md`;
+- `.agents/skills/education-research-assistant/knowledge/adaptive-guidance-bank.md`;
+- `.agents/skills/education-research-assistant/templates/research-decision-log-template.md`;
+- `.agents/skills/education-research-assistant/templates/session-checkpoint-template.md`;
+- `.agents/skills/education-research-assistant/knowledge/output-profiles.md`.
 
 Rules:
 
@@ -84,6 +92,8 @@ Use one output profile:
 
 Default to `standard`. Downgrade when evidence, research conditions, or required formatting are insufficient, and explain why.
 
+Read `.agents/skills/education-research-assistant/knowledge/output-profiles.md`.
+
 ## Evidence rule
 
 For document-grounded tasks:
@@ -93,7 +103,7 @@ For document-grounded tasks:
 - never invent authors, years, sources, policies, theories, data, or findings;
 - do not convert absence in the provided material into absence in the whole field.
 
-Read `knowledge/evidence-protocol.md`.
+Read `.agents/skills/education-research-assistant/knowledge/evidence-protocol.md`.
 
 ## Research design rule
 
@@ -105,7 +115,10 @@ Before proposing methods or an outline:
 4. align each question with evidence, data, method, analysis, and chapter;
 5. revise questions that cannot be answered with available data.
 
-Read `knowledge/research-type-routing.md` and `knowledge/thesis-writing-system.md`.
+Read:
+
+- `.agents/skills/education-research-assistant/knowledge/research-type-routing.md`;
+- `.agents/skills/education-research-assistant/knowledge/thesis-writing-system.md`.
 
 ## Pipeline definitions
 
