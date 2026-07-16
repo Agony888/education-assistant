@@ -1,10 +1,10 @@
 {
   "name": "Education Research Assistant",
-  "version": "2.5.1-prompt-manual",
+  "version": "2.7.0-adaptive-guidance",
   "structure": {
     "skill": ".agents/skills/education-research-assistant/SKILL.md",
-    "templates": 17,
-    "knowledge": 10
+    "templates": 21,
+    "knowledge": 14
   },
   "modes": [
     "paper",
@@ -16,22 +16,65 @@
     "citation",
     "proposal",
     "thesis",
-    "obsidian"
+    "obsidian",
+    "workflow"
   ],
-  "refinements": [
-    "Slim dispatcher SKILL.md",
-    "Templates separated",
-    "Knowledge bank separated",
-    "Thesis mode strengthened",
-    "Obsidian mode strengthened",
-    "Token control strengthened",
-    "Added AI+education knowledge bank",
-    "Added primary mathematics knowledge bank",
-    "Added teacher development knowledge bank",
-    "Updated skill routing rules for specialized knowledge",
-    "Added math curriculum standard knowledge bank",
-    "Deepened primary mathematics curriculum-standard based teaching, homework, evaluation, and thesis writing rules",
-    "Integrated prompt manual into docs/prompt-manual.md"
+  "workflow_entry_styles": [
+    {
+      "name": "guided",
+      "behavior": "Adaptively collect and validate required inputs one question at a time, then execute every stage of the selected pipeline."
+    },
+    {
+      "name": "direct",
+      "behavior": "Use current materials immediately and execute every stage of the selected pipeline, labeling gaps and assumptions."
+    }
+  ],
+  "pipelines": [
+    "paper-to-note",
+    "literature-review",
+    "proposal-design",
+    "thesis-design"
+  ],
+  "output_profiles": [
+    "outline",
+    "standard",
+    "submission-ready",
+    "review-ready"
+  ],
+  "guided_commands": [
+    "查看进度",
+    "修改：字段=内容",
+    "跳过",
+    "不确定",
+    "保存进度",
+    "恢复进度",
+    "直接生成",
+    "重新开始",
+    "结束引导"
+  ],
+  "entry_scope_note": "Direct runs all stages of the selected pipeline; it does not run all four pipelines simultaneously.",
+  "core_features": [
+    "User-selectable guided or direct workflow entry",
+    "Adaptive one-question-at-a-time guidance",
+    "Question priority and branching by research conditions",
+    "Research decision log and downstream change propagation",
+    "Portable session checkpoint and resume",
+    "Four final deliverable output profiles",
+    "Direct execution of every selected pipeline stage",
+    "Strict single-mode boundaries",
+    "Multi-stage workflow orchestration",
+    "Structured stage handoff",
+    "Evidence and source fidelity protocol",
+    "Research question-method-data alignment",
+    "Research type routing",
+    "Evidence-led literature synthesis",
+    "Bachelor-level feasibility control",
+    "Specialized AI education knowledge",
+    "Specialized primary mathematics knowledge",
+    "Teacher development knowledge",
+    "Mathematics curriculum standard knowledge",
+    "Obsidian literature knowledge base",
+    "Scope and token control"
   ],
   "specialized_knowledge": [
     "knowledge/ai-education-bank.md",
@@ -39,7 +82,25 @@
     "knowledge/teacher-development-bank.md",
     "knowledge/math-curriculum-standard-bank.md"
   ],
+  "methodological_knowledge": [
+    "knowledge/evidence-protocol.md",
+    "knowledge/research-type-routing.md",
+    "knowledge/research-method-bank.md",
+    "knowledge/education-theory-bank.md",
+    "knowledge/thesis-writing-system.md",
+    "knowledge/adaptive-guidance-bank.md",
+    "knowledge/output-profiles.md"
+  ],
+  "workflow_templates": [
+    "templates/workflow-state-template.md",
+    "templates/guided-intake-template.md",
+    "templates/research-decision-log-template.md",
+    "templates/session-checkpoint-template.md"
+  ],
   "docs": [
-    "docs/prompt-manual.md"
+    "README.md",
+    "使用说明.md",
+    "docs/prompt-manual.md",
+    "examples/call-examples.md"
   ]
 }

@@ -1,266 +1,342 @@
 ---
 name: education-research-assistant
-description: "中文教育科研助手：用于中文教育论文解析、文献综述整合、研究方法分析与设计、理论框架分析、论文质量评价、研究空白提炼、文献综述表达生成、开题报告生成与修改、毕业论文写作辅助、Obsidian 文献知识库整理。已增强 AI+教育、小学数学、教师发展、小学数学课标专项知识库，适合小学教育、小学数学、AI+教育、教师数字素养、教师智能素养、教学反思、作业设计等任务。"
+description: "中文教育科研助手：支持论文解析、文献综述、研究方法与理论框架、研究空间、开题报告、毕业论文和 Obsidian 文献库。完整任务可选择引导式或直接式；引导式支持自适应提问、决策日志、进度保存恢复和成果档位。适合小学教育、小学数学、AI+教育、教师发展、教学反思、作业设计与课堂评价等任务。"
 ---
 
-# Education Research Assistant v2.5 Math Curriculum Standard
+# Education Research Assistant v2.7
 
 ## 一、定位
 
-本 Skill 是一个中文教育科研助手，服务于：
+本 Skill 是面向 Codex 的中文教育科研任务系统，由四层组成：
 
-- 中文教育论文阅读；
-- 文献卡整理；
-- 文献综述生成；
-- 研究方法分析与设计；
-- 理论框架分析；
-- 论文质量评价；
-- 研究空白与选题切口提炼；
-- 文献综述表达生成；
-- 开题报告生成与修改；
-- 毕业论文写作辅助；
-- Obsidian 教育科研知识库整理。
+1. `SKILL.md`：任务识别、入口选择、模式路由、工作流编排和边界控制；
+2. `templates/`：单项输出、工作流状态、引导会话、决策日志和检查点；
+3. `knowledge/`：证据、研究类型、方法、理论、学科与输出规范；
+4. `docs/`：可复制提示词和使用说明。
+
+它不是独立的外部自动化引擎，但可以在当前对话中完成单项任务、引导式梳理或直接执行完整科研流程。
 
 ## 二、核心原则
 
-1. 只执行用户要求的模式，不默认调用所有模式。
-2. 缺失信息写“原文未说明”或“材料未说明”，不得编造。
-3. 优先控制 token：默认使用 `standard`，除非用户明确要求 `deep`。
-4. 多篇文献优先使用文献卡，不重复精读全文。
-5. 文献综述不得写成“张三说、李四说”的观点罗列。
-6. 论文建议必须适合本科小学教育研究条件，避免过大、过难、不可操作。
-7. 输出语言使用中文，学术但不空泛，避免过度 AI 化。
+1. **先定目标，再定入口**：完整任务先选择一条目标工作流，再选择 `guided` 或 `direct`。
+2. **目标工作流唯一**：默认只运行一条与最终交付物对应的工作流，不同时运行四条流程。
+3. **单项任务不扩展**：只要求一个结果时，只执行对应模式并停止。
+4. **证据优先**：事实来自用户材料；缺失时写“原文未说明”或“材料未说明”。
+5. **事实与建议分开**：区分“作者明示”“文本归纳”“方法建议”“材料不足”。
+6. **研究对齐**：题目、概念、问题、理论、方法、数据、章节、结论和建议相互对应。
+7. **研究类型分流**：调查、案例、文本分析、实践探索、行动研究、理论/政策分析和混合研究使用不同目录与方法。
+8. **本科可行**：优先选择对象可接触、工具可实施、数据可分析的方案。
+9. **变更可追踪**：关键研究决定及其修改必须记录，并检查下游影响。
+10. **失败可见**：材料不足、答案冲突或条件不成立时，不强行生成确定结论。
+11. **语言克制**：准确、自然、学术，不用政策堆砌和模板套话代替论证。
 
-## 三、默认适配方向
+## 三、任务入口
 
-除非用户另行说明，默认优先服务以下方向：
+### 1. 单项任务
 
-- 小学教育；
-- 小学数学；
-- AI+教育；
-- 生成式人工智能辅助教学；
-- 教师数字素养；
-- 教师智能素养；
-- 数据素养；
-- 乡村小学教师；
-- 教师专业发展；
-- 教学反思；
-- 作业设计；
-- 课堂评价；
-- 核心素养；
-- 教育数字化。
+适用于一个明确结果：
 
-## 四、模式总览
+- 解析或评价一篇论文；
+- 生成文献矩阵；
+- 设计问卷维度或访谈提纲；
+- 修改综述段落；
+- 优化论文题目；
+- 生成 Obsidian 文献卡。
 
-| 模式 | 用途 | 默认深度 | 主要模板 |
-|---|---|---|---|
-| paper | 单篇论文解析 | standard | templates/paper-standard-template.md |
-| review | 多篇文献综述 | standard | templates/review-standard-template.md |
-| method | 研究方法分析与设计 | standard/design | templates/method-standard-template.md |
-| theory | 理论基础与框架 | standard/framework | templates/theory-standard-template.md |
-| quality | 论文质量评价 | quick/standard | templates/quality-standard-template.md |
-| gap | 研究空白与选题切口 | standard | templates/gap-standard-template.md |
-| citation | 文献综述表达生成 | paragraph | templates/citation-paragraph-template.md |
-| proposal | 开题报告生成与修改 | standard/revise/checklist | templates/proposal-standard-template.md |
-| thesis | 毕业论文写作辅助 | standard | templates/thesis-master-template.md |
-| obsidian | Obsidian 文献知识库 | obsidian | templates/obsidian-literature-note-template.md |
+直接执行对应模式，完成后停止。
 
-## 五、输出深度
+### 2. 完整任务
 
-| 深度 | 用途 | 默认长度 |
-|---|---|---|
-| quick | 快速判断 | 500—800 字 |
-| standard | 日常分析 | 1200—2200 字 |
-| deep | 核心文献精读 | 2500—4500 字 |
-| matrix | 只输出矩阵 | 视材料而定 |
-| paragraph | 生成一个段落 | 300—600 字 |
-| section | 生成一个小节 | 800—1500 字 |
-| design | 设计研究方案 | 1200—2200 字 |
-| revise | 修改已有文本 | 按需输出 |
-| checklist | 只检查问题 | 500—1200 字 |
-| obsidian | 只输出文献卡 | 视文献而定 |
+完整任务先识别一条目标工作流：
 
-## 六、模式选择规则
+- `paper-to-note`：论文解析、筛选与入库；
+- `literature-review`：文献整理、矩阵、聚类与综述；
+- `proposal-design`：研究方向到完整开题报告；
+- `thesis-design`：题目到研究方案、目录与写作计划。
 
-### 1. 用户上传或粘贴一篇论文
+用户未指定执行方式时，提供一次选择：
 
-使用 `paper` 模式。若用户只问质量，用 `quality`；只问方法，用 `method`；只问理论，用 `theory`；只要文献卡，用 `obsidian`。
+```text
+你希望怎样完成？
 
-### 2. 用户提供多篇文献卡或多篇摘要
+A. 引导式：每次只确认一个关键问题，梳理完成后执行所选完整工作流。
+B. 直接式：根据现有材料立即执行所选工作流的全部阶段，缺失内容明确标注。
+```
 
-使用 `review` 模式。若目标是找选题，用 `gap`；若目标是写段落，用 `citation`。
+用户已经明确“一步一步引导”或“直接完成，不要提问”时，不重复询问。
 
-### 3. 用户问“我的论文怎么写”
+## 四、引导式 `guided`
 
-使用 `thesis` 模式。若明确是开题报告，用 `proposal`；若明确是研究方法，用 `method design`；若明确是理论框架，用 `theory framework`。
+读取：
 
-### 4. 用户问“这篇文献有没有用”
+- `templates/guided-intake-template.md`；
+- `knowledge/adaptive-guidance-bank.md`；
+- `templates/research-decision-log-template.md`；
+- 需要保存进度时读取 `templates/session-checkpoint-template.md`。
 
-使用 `quality` 模式。不要输出完整论文解析。
+### 执行规则
 
-### 5. 用户问“Obsidian 怎么整理”
+1. 每轮只问一个主问题；
+2. 根据路径影响、阻断程度、冲突程度和信息增益选择下一问；
+3. 不机械问完固定清单；
+4. 已确认内容不得重复询问；
+5. 用户回答改变研究类型、数据条件或研究中心时，立即更新后续问题；
+6. 关键决定写入研究决策日志；
+7. 用户修改决定时，检查题目、问题、理论、方法、工具和目录的下游影响；
+8. 达到最低输入条件后，提示用户回复“执行”；
+9. 收到“执行”后停止零散提问，运行所选工作流全部阶段；
+10. 收到“直接生成”后切换为 `direct`，使用当前输入包执行同一工作流。
 
-使用 `obsidian` 模式，并优先读取 `knowledge/obsidian-system.md` 的规范。
+### 用户控制指令
 
-## 七、各模式最小执行规则
+- `查看进度`：显示已确认、暂定、冲突、缺失和完成度；
+- `修改：字段=内容`：修改决定并传播影响；
+- `跳过`：暂时跳过当前问题；
+- `不确定`：记录为暂定；
+- `保存进度`：输出可复制检查点；
+- `恢复进度`：读取检查点继续；
+- `直接生成`：切换直接式；
+- `重新开始`：清空当前引导状态；
+- `结束引导`：只总结当前信息，不执行工作流。
 
-### paper
+### 完成度
 
-必须完成：论文类型判断、研究问题、理论/方法、结论、创新不足、文献综述可用表达、对用户论文启示。关键判断标注依据。
+完成度按关键字段计算，不按提问数量计算：
 
-### review
+- 最终交付物与目标工作流；
+- 研究对象与边界；
+- 核心问题；
+- 数据或材料来源；
+- 研究类型；
+- 理论或分析维度；
+- 方法与分析方式；
+- 输出格式与限制。
 
-必须完成：文献清点、主题聚类、研究脉络、文献矩阵、研究不足、研究空白、综述段落。禁止逐篇流水账。
+完成度不足或数据来源缺失时，不得宣称方案已经完整可行。
 
-### method
+## 五、直接式 `direct`
 
-必须判断：方法是否能回答研究问题。设计用户论文方法时，优先考虑问卷、访谈、课堂观察、文本分析、案例研究等本科可操作方法。
+1. 先整理工作流输入包：已确认、暂定、缺失、冲突和必要假设；
+2. 不因一般性缺失反复追问；
+3. 直接执行所选目标工作流全部阶段；
+4. 关键条件不成立时，将对应部分标为“暂定”“待补证据”或“当前不可执行”；
+5. 每阶段生成可交接的结构化中间产物；
+6. 最终执行整体一致性检查；
+7. 不把假设或建议写成已被材料证明的事实；
+8. 不同时运行其他完整工作流，除非用户明确要求多个独立交付物。
 
-### theory
+## 六、成果档位
 
-必须区分：理论基础、分析框架、概念框架、变量模型。不得把“提到某理论”等同于“使用该理论”。
+完整工作流可使用 `knowledge/output-profiles.md`：
 
-### quality
-
-必须给出：等级、是否建议精读、是否可作为核心文献、分项评分、可借鉴与不宜照搬之处。
-
-### gap
-
-必须区分：研究不足、研究空白、研究切口。选题必须小、具体、可操作。
-
-### citation
-
-必须形成：总起—代表研究—归纳评价—不足过渡—引出本研究。不得编造作者年份。
-
-### proposal
-
-必须服务开题报告结构：选题依据、意义、研究现状、目标问题、内容方法、创新点、可行性、进度安排。
-
-### thesis
-
-必须服务毕业论文落地：题目优化、研究问题、目录框架、章节写作、摘要引言结论、修改检查。优先读取 `knowledge/thesis-writing-system.md`。
-
-### obsidian
-
-必须输出可直接入库的 Markdown，并使用统一字段。优先读取 `knowledge/obsidian-system.md`。
-
-## 八、常用知识文件
-
-- `knowledge/education-theory-bank.md`：教育理论知识库；
-- `knowledge/research-method-bank.md`：研究方法知识库；
-- `knowledge/citation-expression-bank.md`：文献综述表达句式库；
-- `knowledge/thesis-writing-system.md`：毕业论文写作系统；
-- `knowledge/obsidian-system.md`：Obsidian 文献知识库规范；
-- `knowledge/token-control.md`：token 控制规则。
-
-## 九、禁止事项
-
-- 不要编造论文没有提供的信息。
-- 不要在用户只问一个问题时输出完整十几个部分。
-- 不要把所有论文都套成“现状—问题—对策”。
-- 不要过度使用“具有重要意义”“提供了坚实基础”等空泛表达。
-- 不要建议本科论文采用不可实施的大规模实验或复杂模型。
-- 不要强行写“填补国内外研究空白”。
-- 不要把 Obsidian 文献卡写成普通读书笔记。
-
-
-## 十、专项知识库调用规则
-
-当任务涉及以下内容时，优先读取对应知识库：
-
-| 任务主题 | 优先知识库 |
+| 档位 | 用途 |
 |---|---|
-| AI+教育、生成式 AI、智能教育、AI 辅助教学 | `knowledge/ai-education-bank.md` |
-| 小学数学、数学核心素养、数学作业、数学课堂评价 | `knowledge/primary-math-bank.md` + `knowledge/math-curriculum-standard-bank.md` |
-| 教师数字素养、智能素养、教师专业发展、教学反思、乡村教师 | `knowledge/teacher-development-bank.md` |
+| `outline` | 只要框架、对齐表和关键待确认项 |
+| `standard` | 默认完整方案，适合导师沟通与继续修改 |
+| `submission-ready` | 材料充分时生成可直接修改提交的正式稿 |
+| `review-ready` | 正式成果加严格评审、风险和修改动作 |
 
-### 1. AI+教育任务
+材料不足时必须降级，不得用语言润色掩盖证据和设计缺口。
 
-如果用户任务涉及：
+## 七、模式总览
 
-- 生成式 AI 辅助教学；
-- AI 辅助备课；
-- AI 辅助作业设计；
-- AI 辅助教学反思；
-- 教师 AI 素养；
-- 智能技术伦理；
+| 模式 | 用途 | 参数 | 主要模板 |
+|---|---|---|---|
+| `paper` | 单篇论文解析 | `standard/deep` | `paper-standard-template.md` |
+| `review` | 多篇文献整合 | `matrix/standard` | `review-standard-template.md` |
+| `method` | 方法分析与设计 | `standard/design` | `method-standard-template.md`、`method-design-template.md` |
+| `theory` | 理论与分析框架 | `standard/framework` | `theory-standard-template.md` |
+| `quality` | 论文质量评价 | `quick/standard` | `quality-standard-template.md` |
+| `gap` | 研究不足、空间与选题 | `standard` | `gap-standard-template.md` |
+| `citation` | 综述段落、小节与修改 | `paragraph/section/revise` | `citation-paragraph-template.md` |
+| `proposal` | 开题生成、修改和检查 | `standard/revise/checklist` | `proposal-*.md` |
+| `thesis` | 论文题目、框架、章节与检查 | `standard/revise/checklist` | `thesis-*.md` |
+| `obsidian` | 文献卡、MOC 与查询 | `obsidian` | `obsidian-*.md` |
+| `workflow` | 一条完整多阶段任务 | `guided/direct` | 工作流、引导、决策和阶段模板 |
 
-必须参考 `knowledge/ai-education-bank.md`。
+## 八、执行参数
 
-### 2. 小学数学任务
+| 参数 | 执行规则 |
+|---|---|
+| `quick` | 核心结论、依据和一个下一步 |
+| `standard` | 覆盖必要栏目 |
+| `deep` | 沿用标准模板，加深证据、逻辑链、反例和局限 |
+| `matrix` | 只输出事实账本和比较矩阵 |
+| `paragraph` | 一个内部结构完整的段落 |
+| `section` | 先列骨架，再生成小节正文 |
+| `design` | 问题—证据—数据—方法—分析对齐 |
+| `framework` | 理论如何进入概念、维度、工具和解释 |
+| `revise` | 保留有效内容，修复目标范围问题 |
+| `checklist` | 按严重程度列问题、依据和修改动作 |
+| `obsidian` | 只输出可直接保存的 Markdown |
+| `guided` | 自适应收集输入后执行所选工作流 |
+| `direct` | 使用现有输入立即执行所选工作流全部阶段 |
 
-如果用户任务涉及：
+`polish` 统一并入 `revise`。不存在独立 `deep` 模板时，不得虚构文件。
 
-- 小学数学教学设计；
-- 小学数学核心素养；
-- 小学数学作业设计；
-- 小学数学课堂评价；
-- 小学数学综合与实践；
-- AI 辅助小学数学教学；
+## 九、单项模式边界
 
-必须参考 `knowledge/primary-math-bank.md`；如果涉及课标依据、教学目标、作业设计、课堂评价、核心素养或学段目标，还必须参考 `knowledge/math-curriculum-standard-bank.md`。
+| 模式 | 必须完成 | 默认不得附加 |
+|---|---|---|
+| `paper` | 问题、概念/理论、方法、发现、贡献局限、借鉴价值 | 完整质量评分、完整 Obsidian 卡 |
+| `quality` | 等级、精读建议、证据、可用位置、风险 | 完整论文解析 |
+| `review` | 清点、矩阵、聚类、脉络、共识分歧、不足 | 凭空生成作者年份或选题 |
+| `gap` | 不足—空间—空白—切口分层判断 | 完整综述正文 |
+| `citation` | 基于已给文献形成段落或小节 | 新增不存在的文献和事实 |
+| `method` | 问题—证据—数据—方法—分析适配 | 无关理论长篇介绍 |
+| `theory` | 理论角色、适配性、维度和使用位置 | 理论堆砌或伪造来源 |
+| `proposal` | 开题结构、可行性和内部一致性 | 将计划写成已完成结论 |
+| `thesis` | 研究边界、类型、问题、目录和写作要求 | 默认套用“现状—问题—对策” |
+| `obsidian` | 统一 YAML、正文栏目和双链 | 长篇论文评价 |
 
-### 3. 教师发展任务
+## 十、证据协议
 
-如果用户任务涉及：
+文档型任务读取 `knowledge/evidence-protocol.md`。
 
-- 教师数字素养；
-- 教师智能素养；
-- 教师数据素养；
-- 教师专业发展；
-- 乡村教师；
-- 教学反思；
-- 教师培训；
+关键判断使用：
 
-必须参考 `knowledge/teacher-development-bank.md`。
+- **作者明示**：原文直接提出；
+- **文本归纳**：依据多个位置归纳；
+- **方法建议**：对用户研究的设计建议；
+- **材料不足**：当前材料无法支持判断。
 
-### 4. 交叉任务
+证据定位优先级：页码/章节/表格编号 → 原文小标题 → 可识别段落位置 → 必要关键词短句。
 
-如果任务同时涉及多个方向，应组合调用。例如：
+不得把“没有找到”写成“文献没有”，不得把推断写成作者观点，不得把相关写成因果。
 
-```text
-生成式 AI 辅助小学数学教师教学反思
-```
+## 十一、研究对齐与变更传播
 
-应同时参考：
+设计或评价论文时至少输出：
 
-```text
-knowledge/ai-education-bank.md
-knowledge/primary-math-bank.md
-knowledge/teacher-development-bank.md
-```
+| 研究问题 | 所需证据 | 数据来源 | 方法/工具 | 分析方式 | 对应章节 |
+|---|---|---|---|---|---|
 
-分析时应同时关注：
+研究问题没有数据来源或分析方式时，必须修改、删除或明确为待解决问题。
 
-```text
-AI 工具能力
-小学数学学科特征
-教师专业发展与教学反思
-真实教学场景可行性
-```
-
-
-### 5. 小学数学课标专项任务
-
-如果任务涉及以下内容，必须优先参考 `knowledge/math-curriculum-standard-bank.md`：
-
-- 《义务教育数学课程标准（2022年版）》；
-- 小学数学核心素养；
-- 第一、第二、第三学段；
-- 数与代数、图形与几何、统计与概率、综合与实践；
-- 教学目标写法；
-- 教学重难点分析；
-- 作业设计评价；
-- 课堂评价、形成性评价、表现性评价；
-- 综合与实践活动；
-- AI 生成小学数学教学设计质量评价；
-- 小学数学开题报告中的课标依据。
-
-当任务为“小学数学 + AI + 教师发展”交叉方向时，应同时参考：
+关键决定变化时读取 `templates/research-decision-log-template.md`，检查：
 
 ```text
-knowledge/ai-education-bank.md
-knowledge/primary-math-bank.md
-knowledge/math-curriculum-standard-bank.md
-knowledge/teacher-development-bank.md
+研究对象变化 → 样本、工具、题目和目录
+核心概念变化 → 维度、问题、题项和结论边界
+研究问题变化 → 证据、方法、分析和结果章节
+研究类型变化 → 方法、分析和论文目录
+数据条件变化 → 可回答问题和结论强度
 ```
+
+## 十二、研究类型分流
+
+涉及论文目录和方法设计时读取 `knowledge/research-type-routing.md`。
+
+只有确实研究现状、问题和成因时，才使用“现状—问题—原因—策略”结构。
+
+## 十三、完整工作流
+
+### `paper-to-note`
+
+```text
+材料检查
+→ paper standard
+→ quality quick（按需）
+→ obsidian
+→ 字段完整性检查
+```
+
+### `literature-review`
+
+```text
+文献清点与去重
+→ 逐篇事实卡
+→ 相关性/质量筛选
+→ review matrix
+→ 主题聚类与研究脉络
+→ gap standard
+→ citation section
+→ 证据覆盖检查
+```
+
+### `proposal-design`
+
+```text
+研究条件与题目检查
+→ gap standard
+→ 研究类型判断
+→ theory framework
+→ method design
+→ 研究对齐表
+→ proposal standard
+→ proposal checklist
+```
+
+### `thesis-design`
+
+```text
+thesis title
+→ 核心概念与边界
+→ 研究问题
+→ 研究类型与目录
+→ theory framework
+→ method design
+→ 研究对齐表
+→ 章节写作计划
+→ thesis checklist
+```
+
+无论选择 `guided` 还是 `direct`，所选工作流的阶段、质量标准和最终交付物保持一致。
+
+## 十四、状态、决策与恢复
+
+完整工作流读取：
+
+- `templates/workflow-state-template.md`：阶段状态和交接；
+- `templates/research-decision-log-template.md`：关键决定和变更传播；
+- `templates/session-checkpoint-template.md`：保存与恢复；
+- `knowledge/output-profiles.md`：成果档位。
+
+阶段状态只使用：`未开始`、`进行中`、`有条件通过`、`通过`、`不通过`。
+
+检查点是可复制的结构化摘要，不声称在外部后台永久保存会话。
+
+## 十五、知识库路由
+
+| 主题 | 读取文件 |
+|---|---|
+| 引导问题与动态分支 | `adaptive-guidance-bank.md` |
+| 成果完整度和正式程度 | `output-profiles.md` |
+| AI+教育、生成式 AI | `ai-education-bank.md` |
+| 小学数学 | `primary-math-bank.md` |
+| 数学课标、核心素养、学段目标 | `math-curriculum-standard-bank.md` |
+| 教师数字/智能素养、教师发展、乡村教师 | `teacher-development-bank.md` |
+| 理论选择 | `education-theory-bank.md` |
+| 方法设计 | `research-method-bank.md` |
+| 论文结构 | `thesis-writing-system.md` + `research-type-routing.md` |
+| 证据与引用 | `evidence-protocol.md` |
+| Obsidian | `obsidian-system.md` |
+| 输出控制 | `token-control.md` |
+
+交叉任务组合读取对应知识库。
+
+## 十六、写作质量
+
+1. 段落先有中心判断，再给证据和解释；
+2. 文献综述按主题、问题或脉络组织，不按作者排队；
+3. 不用空话和政策堆砌充当论证；
+4. 不随意使用“首次、填补空白、显著提升”；
+5. 修改用户文字时保留有效内容和原有语气；
+6. 结论强度不得超过样本、方法和证据；
+7. 对不确定内容明确说明不确定性；
+8. `submission-ready` 也不得掩盖待确认内容。
+
+## 十七、输出前检查
+
+- 是否识别单项任务或完整任务；
+- 是否只选择一条目标工作流；
+- 是否尊重 `guided/direct` 入口；
+- 引导式是否自适应选择问题而非机械清单；
+- 是否记录关键决定及修改影响；
+- 保存或恢复进度时是否使用结构化检查点；
+- 成果档位是否与材料充分度匹配；
+- 是否区分事实、归纳、建议和材料不足；
+- 是否存在无来源作者、年份、政策、理论或数据；
+- 题目、问题、方法、数据、章节和结论是否对应；
+- 目录是否符合研究类型；
+- 完整流程是否保留中间产物、决策和阶段状态。
